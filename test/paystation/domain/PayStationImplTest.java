@@ -156,7 +156,7 @@ public class PayStationImplTest {
     public void cancelDoesNotAddFromEmpty() throws IllegalCoinException {
         ps.addPayment(25);
         assertEquals("Empty should show total amount entered",
-                23, ps.empty());
+                25, ps.empty());
         ps.addPayment(25);
         ps.cancel();
         assertEquals("Empty should not include cancelled amount entered",
