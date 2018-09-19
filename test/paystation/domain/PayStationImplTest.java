@@ -146,7 +146,7 @@ public class PayStationImplTest {
     public void emptyReturnsTotalEntered() throws IllegalCoinException {
         ps.addPayment(10);
         assertEquals("Empty should show total amount entered",
-                0, ps.empty());
+                10, ps.empty());
     }
 
 }
