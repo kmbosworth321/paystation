@@ -19,6 +19,8 @@
  */
 package paystation.domain;
 
+import java.util.Map;
+
 public interface PayStation {
 
     /**
@@ -47,9 +49,15 @@ public interface PayStation {
     Receipt buy();
 
     /**
-     * Cancel the present transaction. Resets the machine for a new transaction.
+     * Cancel the present transaction. Resets the paystation for a new transaction.
+     * @return A Map defining the coins returned to the user.
+     * The key is the coin type and the associated value is the number of these coins that are
+     * returned.
+     * The Map object is never null even if no coins are returned.
+     * The Map will only contain only keys for coins to be returned.
+     * The Map will be cleared after a cancel or buy.
      */
-    void cancel();
+    Map<Integer, Integer> cancel();
 
     /**
      * Return the total amount of money collected since the last call and empties

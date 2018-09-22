@@ -1,14 +1,17 @@
 package paystation.domain;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Implementation of the pay station.
  *
  * Responsibilities:
  *
- * 1) Accept payment; 
- * 2) Calculate parking time based on payment; 
- * 3) Know earning, parking time bought; 
- * 4) Issue receipts; 
+ * 1) Accept payment;
+ * 2) Calculate parking time based on payment;
+ * 3) Know earning, parking time bought;
+ * 4) Issue receipts;
  * 5) Handle buy and cancel events.
  *
  * This source code is from the book "Flexible, Reliable Software: Using
@@ -20,7 +23,7 @@ package paystation.domain;
  * purposes. For any commercial use, see http://www.baerbak.com/
  */
 public class PayStationImpl implements PayStation {
-    
+
     private int insertedSoFar;
     private int timeBought;
 
@@ -51,10 +54,11 @@ public class PayStationImpl implements PayStation {
     }
 
     @Override
-    public void cancel() {
+    public Map<Integer, Integer> cancel() {
         reset();
+        return null;
     }
-    
+
     private void reset() {
         timeBought = insertedSoFar = 0;
     }
