@@ -130,17 +130,25 @@ public class PayStationImplTest {
      * Verify that cancel clears the pay station
      */
     @Test
-    public void shouldClearAfterCancel()
-            throws IllegalCoinException {
+    public void shouldClearAfterCancel() throws IllegalCoinException {
         ps.addPayment(10);
         ps.cancel();
         assertEquals("Cancel should clear display",
                 0, ps.readDisplay());
-        HashMap<Integer, Integer> emptyMap = (HashMap<Integer, Integer>) ps.cancel();
-        assertTrue("Cancel should clear map", emptyMap.isEmpty());
         ps.addPayment(25);
         assertEquals("Insert after cancel should work",
                 10, ps.readDisplay());
+    }
+
+    /**
+     * Call to cancel should clear the map.
+     */
+    @Test
+    public void shouldClearMapAfterCancel() throws IllegalCoinException {
+        ps.addPayment(10);
+        ps.cancel();
+        HashMap<Integer, Integer> emptyMap = (HashMap<Integer, Integer>) ps.cancel();
+        assertTrue("Cancel should clear map", emptyMap.isEmpty());
     }
 
     /**
