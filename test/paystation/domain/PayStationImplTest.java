@@ -157,6 +157,26 @@ public class PayStationImplTest {
     }
 
     /**
+     * Call to cancel should return a map containing a mixture of coins entered.
+     */
+    @Test
+    public void cancelShouldReturnMapContainingMixtureOfCoins() throws IllegalCoinException {
+        ps.addPayment(25);
+        ps.addPayment(5);
+        ps.addPayment(10);
+        ps.addPayment(5);
+        HashMap<Integer, Integer> returnedMap = (HashMap<Integer, Integer>) ps.cancel();
+        assertEquals("Cancel should return a map containing a mixture of coins entered",
+                3, returnedMap.size());
+        assertEquals("Cancel should return a map containing a mixture of coins entered",
+                1, (int) returnedMap.get(25));
+        assertEquals("Cancel should return a map containing a mixture of coins entered",
+                1, (int) returnedMap.get(10));
+        assertEquals("Cancel should return a map containing a mixture of coins entered",
+                2, (int) returnedMap.get(5));
+    }
+
+    /**
      * Call to empty returns the total amount entered.
      */
     @Test
