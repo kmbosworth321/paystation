@@ -15,6 +15,8 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
 
+import java.util.HashMap;
+
 public class PayStationImplTest {
 
     PayStation ps;
@@ -134,6 +136,8 @@ public class PayStationImplTest {
         ps.cancel();
         assertEquals("Cancel should clear display",
                 0, ps.readDisplay());
+        HashMap<Integer, Integer> emptyMap = (HashMap<Integer, Integer>) ps.cancel();
+        assertTrue("Cancel should clear map", emptyMap.isEmpty());
         ps.addPayment(25);
         assertEquals("Insert after cancel should work",
                 10, ps.readDisplay());

@@ -67,7 +67,9 @@ public class PayStationImpl implements PayStation {
     @Override
     public Map<Integer, Integer> cancel() {
         reset();
-        return null;
+        HashMap<Integer, Integer> returnedMap = new HashMap<>();
+        returnedMap.put(1, 1);
+        return returnedMap;
     }
 
     private void reset() {
