@@ -177,6 +177,18 @@ public class PayStationImplTest {
     }
 
     /**
+     * Call to cancel should return a map that does not contain a key for a coin not entered.
+     */
+    @Test
+    public void cancelShouldReturnMapNotContainingKeyNotEntered() throws IllegalCoinException {
+        assertFalse("Returned map should not create key for a coin not entered",
+                ps.cancel().containsKey(25));
+        ps.addPayment(25);
+        assertFalse("Returned map should not create key for a coin not entered",
+                ps.cancel().containsKey(5));
+    }
+
+    /**
      * Call to empty returns the total amount entered.
      */
     @Test
