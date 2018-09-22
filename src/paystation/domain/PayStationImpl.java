@@ -25,7 +25,14 @@ import java.util.Map;
 public class PayStationImpl implements PayStation {
 
     private int insertedSoFar;
+    private HashMap<Integer, Integer> insertedMap;  /* map recording coin types and quantities */
     private int timeBought;
+
+    public PayStationImpl() {
+        insertedSoFar = 0;
+        insertedMap = new HashMap<>();
+        timeBought = 0;
+    }
 
     @Override
     public void addPayment(int coinValue)
@@ -38,6 +45,10 @@ public class PayStationImpl implements PayStation {
                 throw new IllegalCoinException("Invalid coin: " + coinValue);
         }
         insertedSoFar += coinValue;
+        if (insertedMap.containsKey(coinValue))
+            insertedMap.put(coinValue, insertedMap.get(coinValue) + 1);
+        else
+            insertedMap.put(coinValue, 1);
         timeBought = insertedSoFar / 5 * 2;
     }
 
@@ -61,6 +72,7 @@ public class PayStationImpl implements PayStation {
 
     private void reset() {
         timeBought = insertedSoFar = 0;
+        insertedMap.clear();
     }
 
     @Override
