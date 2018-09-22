@@ -143,6 +143,16 @@ public class PayStationImplTest {
                 10, ps.readDisplay());
     }
 
+    @Test
+    public void cancelShouldReturnMapContainingOneCoin() throws IllegalCoinException {
+        ps.addPayment(25);
+        HashMap<Integer, Integer> returnedMap = (HashMap<Integer, Integer>) ps.cancel();
+        assertEquals("Cancel should return a map containing one coin entered",
+                1, returnedMap.size());
+        assertEquals("Cancel should return a map containing one coin entered",
+                1, (int) returnedMap.get(25));
+    }
+
     /**
      * Call to empty returns the total amount entered.
      */
