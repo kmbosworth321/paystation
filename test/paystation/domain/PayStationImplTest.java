@@ -143,6 +143,9 @@ public class PayStationImplTest {
                 10, ps.readDisplay());
     }
 
+    /**
+     * Call to cancel should return a map containing one coin entered.
+     */
     @Test
     public void cancelShouldReturnMapContainingOneCoin() throws IllegalCoinException {
         ps.addPayment(25);
