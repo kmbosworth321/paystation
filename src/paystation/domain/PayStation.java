@@ -3,10 +3,10 @@
  *
  * Responsibilities:
  *
- * 1) Accept payment; 
- * 2) Calculate parking time based on payment; 
- * 3) Know earning, parking time bought; 
- * 4) Issue receipts; 
+ * 1) Accept payment;
+ * 2) Calculate parking time based on payment;
+ * 3) Know earning, parking time bought;
+ * 4) Issue receipts;
  * 5) Handle buy and cancel events.
  *
  * This source code is from the book "Flexible, Reliable Software: Using
@@ -28,7 +28,7 @@ public interface PayStation {
      * is, a quarter is coinValue=25, etc.
      * @throws IllegalCoinException in case coinValue is not a valid coin value
      */
-    public void addPayment(int coinValue) throws IllegalCoinException;
+    void addPayment(int coinValue) throws IllegalCoinException;
 
     /**
      * Read the machine's display. The display shows a numerical description of
@@ -36,7 +36,7 @@ public interface PayStation {
      *
      * @return the number to display on the pay station display
      */
-    public int readDisplay();
+    int readDisplay();
 
     /**
      * Buy parking time. Terminate the ongoing transaction and return a parking
@@ -44,16 +44,16 @@ public interface PayStation {
      *
      * @return a valid parking receipt object.
      */
-    public Receipt buy();
+    Receipt buy();
 
     /**
      * Cancel the present transaction. Resets the machine for a new transaction.
      */
-    public void cancel();
+    void cancel();
 
     /**
      * Return the total amount of money collected since the last call and empties
      * it, setting the total to zero. Note: Money only collected after call to Buy
      */
-    public int empty();
+    int empty();
 }
