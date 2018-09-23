@@ -220,4 +220,20 @@ public class PayStationImplTest {
                 25, ps.empty());
     }
 
+    /**
+     * Call to empty resets totalCollected to 0
+     */
+    @Test
+    public void emptyResetsTotalCollected() throws IllegalCoinException {
+        ps.addPayment(25);
+        ps.buy();
+        ps.addPayment(25);
+        ps.buy();
+        assertEquals("Empty should return total collected.",
+                50, ps.empty());
+        assertEquals("Previous empty should have reset total to zero.",
+                0, ps.empty());
+    }
+
+
 }
