@@ -83,7 +83,7 @@ public class PayStationImpl implements PayStation {
     /* Returns total money collected in the paystation since the last call to empty, and resets total */
     public int empty() {
         int retval = totalCollected;
-        //totalCollected = 0;
+        totalCollected = 0;
         return retval;
     }
 }
