@@ -27,11 +27,13 @@ public class PayStationImpl implements PayStation {
     private int insertedSoFar;
     private HashMap<Integer, Integer> insertedMap;  /* map recording coin types and quantities */
     private int timeBought;
+    private int totalCollected; /* Stores the total amount (in cents) collected by paystation */
 
     public PayStationImpl() {
         insertedSoFar = 0;
         insertedMap = new HashMap<>();
         timeBought = 0;
+        totalCollected = 0;
     }
 
     @Override
@@ -60,6 +62,7 @@ public class PayStationImpl implements PayStation {
     @Override
     public Receipt buy() {
         Receipt r = new ReceiptImpl(timeBought);
+        totalCollected += insertedSoFar; /* Each buy action accrues more total money collected */
         reset();
         return r;
     }
@@ -77,7 +80,10 @@ public class PayStationImpl implements PayStation {
     }
 
     @Override
+    /* Returns total money collected in the paystation since the last call to empty, and resets total */
     public int empty() {
-        return insertedSoFar;
+        int retval = totalCollected;
+        totalCollected = 0;
+        return retval;
     }
 }
