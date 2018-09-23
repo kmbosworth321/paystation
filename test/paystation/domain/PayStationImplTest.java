@@ -202,6 +202,7 @@ public class PayStationImplTest {
     @Test
     public void emptyReturnsTotalEntered() throws IllegalCoinException {
         ps.addPayment(10);
+        ps.buy();
         assertEquals("Empty should show total amount entered",
                 10, ps.empty());
     }
@@ -212,8 +213,7 @@ public class PayStationImplTest {
     @Test
     public void cancelDoesNotAddFromEmpty() throws IllegalCoinException {
         ps.addPayment(25);
-        assertEquals("Empty should show total amount entered",
-                25, ps.empty());
+        ps.buy();
         ps.addPayment(25);
         ps.cancel();
         assertEquals("Empty should not include cancelled amount entered",
