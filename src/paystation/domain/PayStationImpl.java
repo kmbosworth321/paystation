@@ -76,7 +76,7 @@ public class PayStationImpl implements PayStation {
 
     private void reset() {
         timeBought = insertedSoFar = 0;
-        //insertedMap.clear();
+        insertedMap.clear();
     }
 
     @Override
