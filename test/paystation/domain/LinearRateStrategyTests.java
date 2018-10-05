@@ -3,6 +3,8 @@ package paystation.domain;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static paystation.domain.Strategy.LINEAR;
+
 import org.junit.Before;
 
 public class LinearRateStrategyTests {
@@ -16,7 +18,8 @@ public class LinearRateStrategyTests {
      */
     @Before
     public void setup() {
-        ps = new PayStationImpl(new LinearRateStrategy());
+        ps = new PayStationImpl();
+        ps.setRateStrategy(LINEAR);
     }
 
 //    @Test
