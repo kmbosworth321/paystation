@@ -1,6 +1,6 @@
 package paystation.domain;
 
-public abstract class RateStrategy {
+public interface RateStrategy {
 
-    public abstract int calculateTime(int payment);
+    int calculatePayment();
 }
