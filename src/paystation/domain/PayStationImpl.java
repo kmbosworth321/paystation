@@ -86,4 +86,9 @@ public class PayStationImpl implements PayStation {
         totalCollected = 0;
         return retval;
     }
+
+    @Override
+    public void setRateStrategy(Strategy newStrategy) {
+        System.err.println("set rate strategy unimplemented");
+    }
 }
