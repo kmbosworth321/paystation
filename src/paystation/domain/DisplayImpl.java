@@ -19,7 +19,6 @@ public class DisplayImpl implements Display {
 
     //It puts up a menu to allow a customer to select a choice:
     
-    private final int MAX_INVALID=10; 
     private final String MENU = "    1. Deposit Coins\n" +
             "    2. Display\n" +
             "    3. Buy Ticket\n" +
@@ -69,30 +68,38 @@ public class DisplayImpl implements Display {
     }
         
     @Override
-    public int selectOption(){
-        int choice;
+    public int selectOption(int maxInvalidInputs, boolean isTest){
+        int choice = -1;
+        
         
         Scanner sc = new Scanner(System.in);
         System.out.print("Please select an option numerically (1-5)\n");
         String raw = null;
         
-        for(int loops=0; loops<MAX_INVALID; loops++){
-            try{
+        for(int l=0; l<maxInvalidInputs; l++){
+        try{
                 raw = sc.nextLine();
             }catch(Exception e){
-                System.out.print("Invalid input/n");
+                System.out.print("Invalid input ("+l+")\n");
             }finally{
-                choice = validateUserInput(raw);
+                if(!isTest){
+                    choice = validateUserInput(raw);
+                }else{
+                    continue;
+                }
             }
             
             if(choice != -1){
+                sc.close();
                 return choice;
             }
         }
-        
-        //if this code is reached then user entered too many invalid inputs
-        System.out.print(MAX_INVALID + " invalid inputs have been enter successively/n"+
-                "This transaction will now cancel");
+        if (!isTest){
+            //if this code is reached then user entered too many invalid inputs
+            System.out.print(maxInvalidInputs + " invalid inputs have been enter successively\n"+
+                    "This transaction will now cancel");
+        }
+        sc.close();
         return 4;
     }
     
