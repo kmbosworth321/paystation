@@ -5,12 +5,11 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.util.Scanner;
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
-import paystation.domain.IllegalCoinException;
+//import paystation.domain.IllegalCoinException;
 //import static paystation.domain.Main;
 
 /*
@@ -119,16 +118,18 @@ public class DisplayImplTest {
     @Test 
     public void shouldPromptUser()
             throws IllegalCoinException {
-        d.selectOption(true);
+        d.selectOption(0,true);
         //provideInput("1");
         assertEquals("Should prompt user", "Please select an option numerically (1-5)\n", 
                 getOutput());
     }
     
-    //@Test
-    //public void shouldGetInput()
-    //        throws IllegalCoinException {
-    //    Scanner sc = new Scanner(System.in);
-        //d.getOption();
-    //}
+    @Test 
+    public void shouldLoop()
+            throws IllegalCoinException {
+        d.selectOption(2,true);
+        //provideInput("1");
+        assertEquals("Should loop", "Please select an option numerically (1-5)\n"+
+                "Invalid input (0)\n"+"Invalid input (1)\n", getOutput());
+    }
 }
