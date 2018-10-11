@@ -5,50 +5,33 @@
  */
 package paystation.domain;
 import java.util.Scanner;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  *
  * @author andrewditty
  */
 public class DisplayImpl implements Display {
-    //DisplayMenu
-    //ValidateUserInput
-    //Print Receipt
-    
-    // A main() program should be developed to simulate the PayStation operation. 
-
-    //It puts up a menu to allow a customer to select a choice:
     
     private final String MENU = "    1. Deposit Coins\n" +
             "    2. Display\n" +
             "    3. Buy Ticket\n" +
             "    4. Cancel\n" +
             "    5. Change Rate Strategy\n";
+    
 
-    
-        //  Deposit Coins
-        //  Display
-        //  Buy Ticket
-        //  Cancel
-        //  Change Rate Strategy
-    
     public void displayImpl(){
-        //String[] menu = MENU;
     }     
     
     @Override
     public void drawMenu(){
-        //int choice = 0;
-        //Scanner scan = new Scanner(System.in);
-
-        //do{
         System.out.print(MENU);
-        //choice = scan.nextInt();
-        //}while(choice<1 || choice>5);
     }
     
-    @Override 
+    @Override
     public int validateUserInput(String input){
+        input = input.trim();
         int i = -1;
         try{
             i = Integer.parseInt(input);
@@ -71,27 +54,23 @@ public class DisplayImpl implements Display {
     public int selectOption(int maxInvalidInputs, boolean isTest){
         int choice = -1;
         
-        
         Scanner sc = new Scanner(System.in);
         System.out.print("Please select an option numerically (1-5)\n");
         String raw = null;
         
         for(int l=0; l<maxInvalidInputs; l++){
-        try{
+            try{
                 raw = sc.nextLine();
             }catch(Exception e){
                 System.out.print("Invalid input ("+l+")\n");
             }finally{
                 if(!isTest){
                     choice = validateUserInput(raw);
-                }else{
-                    continue;
                 }
-            }
-            
-            if(choice != -1){
-                sc.close();
-                return choice;
+                if(choice != -1){
+                    sc.close();
+                    return choice;
+                }
             }
         }
         if (!isTest){
@@ -103,4 +82,29 @@ public class DisplayImpl implements Display {
         return 4;
     }
     
+    @Override
+    public void printReceipt(Receipt r){
+        String[] times = calculateTimes(r);
+        
+        String mins = times[0];
+        String now = times[1];
+        String exp = times[2];
+        
+        System.out.print("Ticket purchased on " + now + " for "+mins+" minutes\n");
+        System.out.print("Parking expires at " + exp);
+    }
+    
+    @Override
+    public String[] calculateTimes(Receipt r){
+        Calendar cal = Calendar.getInstance();
+        
+        String mins = Integer.toString(r.value());
+        int millis = r.value() * 60 * 1000;
+        
+        Date now = cal.getTime();
+        Date exp = new Date(now.getTime() + millis);
+        
+        String[] retval = {mins, now.toString(), exp.toString()};
+        return retval;
+    }
 }
