@@ -13,19 +13,11 @@ import static org.junit.Assert.assertThat;
 import static org.hamcrest.CoreMatchers.containsString;
 import org.junit.Before;
 import org.junit.Test;
-//import paystation.domain.IllegalCoinException;
-//import static paystation.domain.Main;
 
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Test Cases for Display
  */
 
-/**
- *
- * @author andrewditty
- */
 public class DisplayImplTest {
     
     Display d;
