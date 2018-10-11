@@ -7,6 +7,8 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.containsString;
 import org.junit.Before;
 import org.junit.Test;
 //import paystation.domain.IllegalCoinException;
@@ -131,5 +133,31 @@ public class DisplayImplTest {
         //provideInput("1");
         assertEquals("Should loop", "Please select an option numerically (1-5)\n"+
                 "Invalid input (0)\n"+"Invalid input (1)\n", getOutput());
+    }
+    
+    @Test
+    public void shouldReturnTimes()
+        throws IllegalCoinException{
+        
+        int value = 30;
+        Receipt test = new ReceiptImpl(value);
+        String[] res = d.calculateTimes(test);
+        
+        String mins = res[0];
+        String now = res[1];
+        String exp = res[2];
+        
+        assertEquals("Should return correct minutes ", mins, Integer.toString(value));
+    }
+    
+    
+    @Test
+    public void shouldPrintReceipt()
+            throws IllegalCoinException {
+        int value = 30;
+        Receipt test = new ReceiptImpl(value);
+        d.printReceipt(test);
+        //assertEquals("Should print the recipt", value+" minutes", getOutput());
+        assertThat(getOutput(), containsString("Ticket purchased on "));// , " for " , " minutes\n"
     }
 }
