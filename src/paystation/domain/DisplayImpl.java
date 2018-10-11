@@ -8,10 +8,6 @@ import java.util.Scanner;
 import java.util.Calendar;
 import java.util.Date;
 
-/**
- *
- * @author andrewditty
- */
 public class DisplayImpl implements Display {
     
     private final String MENU = "    1. Deposit Coins\n" +
