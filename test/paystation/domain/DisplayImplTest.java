@@ -5,6 +5,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.util.Calendar;
+import java.util.Date;
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
@@ -25,12 +27,7 @@ import org.junit.Test;
  * @author andrewditty
  */
 public class DisplayImplTest {
-     /**
-     * Entering 5 cents should make the display report 2 minutes parking time.
-     * @throws paystation.domain.IllegalCoinException
-     */
     
-    //PayStation ps;
     Display d;
     
     private final InputStream systemIn = System.in;
@@ -52,7 +49,6 @@ public class DisplayImplTest {
 
     @Before
     public void setup() {
-        //ps = new PayStationImpl();
         d = new DisplayImpl();
         testOut = new ByteArrayOutputStream();
         System.setOut(new PrintStream(testOut));
@@ -64,7 +60,9 @@ public class DisplayImplTest {
         System.setOut(systemOut);
     }
     
-    
+     /**
+     * The Display should print out the menu, when drawMenu() is called
+     */
     @Test
     public void shouldDrawMenu()
             throws IllegalCoinException {
@@ -80,8 +78,7 @@ public class DisplayImplTest {
     }
     
      /**
-     * 
-     * @throws paystation.domain.IllegalCoinException
+     * Verify that non integer input is rejected
      */
     @Test
     public void shouldRejectInvalidTextInput()
@@ -91,6 +88,9 @@ public class DisplayImplTest {
         assertEquals("Should return -1", -1, test);
     }
     
+    /**
+     * Verify that out of range input is rejected
+     */
     @Test 
     public void shouldRejectOutOfRangeInput()
             throws IllegalCoinException {
@@ -103,6 +103,9 @@ public class DisplayImplTest {
         assertEquals("Should return -1", -1, test);
     }
     
+    /**
+     * Verify that valid input is accepted
+     */
     @Test 
     public void shouldAcceptValidInput()
             throws IllegalCoinException {
@@ -115,8 +118,14 @@ public class DisplayImplTest {
             
             assertEquals("Should return " + in, i, res);
         }
+        
+        res = d.validateUserInput("   3  ");
+        assertEquals("Should return 3", 3, res);
     }
     
+    /**
+     * Verify that user is prompted
+     */
     @Test 
     public void shouldPromptUser()
             throws IllegalCoinException {
@@ -126,15 +135,26 @@ public class DisplayImplTest {
                 getOutput());
     }
     
+    /**
+     * Verify that the program will loop with invalid inputs and return 4 if 
+     * max loops are exceeded
+     */
     @Test 
     public void shouldLoop()
             throws IllegalCoinException {
-        d.selectOption(2,true);
+        int res = d.selectOption(3,true);
         //provideInput("1");
         assertEquals("Should loop", "Please select an option numerically (1-5)\n"+
-                "Invalid input (0)\n"+"Invalid input (1)\n", getOutput());
+                "Invalid input (0)\n"+"Invalid input (1)\n"+"Invalid input (2)\n", 
+                getOutput());
+        assertEquals("Should return 4", 4, res);
     }
     
+    
+    /**
+     * If a receipt with 30 minutes is entered then the amount of minutes should
+     * be printed as well as the year
+     */
     @Test
     public void shouldReturnTimes()
         throws IllegalCoinException{
@@ -147,10 +167,18 @@ public class DisplayImplTest {
         String now = res[1];
         String exp = res[2];
         
+        Calendar cal = Calendar.getInstance();
+        int today = cal.get(Calendar.DAY_OF_MONTH);
+        int year = cal.get(Calendar.YEAR);
+        
         assertEquals("Should return correct minutes ", mins, Integer.toString(value));
+        assertThat("Now should contain ", now, containsString(Integer.toString(year)));
+        assertThat("exp should contain ", exp, containsString(Integer.toString(year)));
     }
     
-    
+    /**
+     * If a receipt is printed it should contain certain Strings
+     */
     @Test
     public void shouldPrintReceipt()
             throws IllegalCoinException {
@@ -158,6 +186,6 @@ public class DisplayImplTest {
         Receipt test = new ReceiptImpl(value);
         d.printReceipt(test);
         //assertEquals("Should print the recipt", value+" minutes", getOutput());
-        assertThat(getOutput(), containsString("Ticket purchased on "));// , " for " , " minutes\n"
+        assertThat("Should return string", getOutput(), containsString("Ticket purchased on "));
     }
 }
