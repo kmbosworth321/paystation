@@ -28,12 +28,13 @@ public class DisplayImplTest {
     private ByteArrayInputStream testIn;
     private ByteArrayOutputStream testOut;
 
-
+    //helper class
     private void provideInput(String data) {
         testIn = new ByteArrayInputStream(data.getBytes());
         System.setIn(testIn);
     }
-
+    
+    //helper class
     private String getOutput() {
         return testOut.toString();
     }
