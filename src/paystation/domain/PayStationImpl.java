@@ -90,7 +90,7 @@ public class PayStationImpl implements PayStation {
     }
 
     @Override
-    public void setRateStrategy(Strategy newStrategy) {
+    public void setRateStrategy(RateStrategy strategy) {
         System.err.println("set rate strategy unimplemented");
     }
 }
