@@ -64,4 +64,12 @@ public interface PayStation {
      * it, setting the total to zero. Note: Money only collected after call to Buy
      */
     int empty();
+
+    /**
+     * Dummy header for setting current rate strategy of paystation instance.
+     * Resolve clashes by overrulling this change. Header is to make tests more coherent.
+     * @param strategy RateStrategy defines which strategy this paystation will use.
+     */
+    void setRateStrategy(RateStrategy strategy);
+
 }
