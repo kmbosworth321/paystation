@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 package paystation.domain;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.Scanner;
 import java.util.Calendar;
 import java.util.Date;
@@ -27,36 +29,41 @@ public class DisplayImpl implements Display {
     
     @Override
     public int validateUserInput(String input){
-        input = input.trim();
-        int i = -1;
-        try{
-            i = Integer.parseInt(input);
-        }catch(Exception e){
-            System.out.print("Invalid selection. Integers only. Enter 1-5 only\n");
-            return -1;
-        }
-        
-        if (i>=1 && i<=5){
+        if(input != null)
+            input = input.trim();
+            int i = -1;
+            try{
+                i = Integer.parseInt(input);
+            }catch(Exception e){
+                System.out.print("Invalid selection. Integers only. Enter 1-5 only\n");
+                return -1;
+            }
+
+            if (i>=1 && i<=5){
+                return i;
+            }else{
+                System.out.print("Invalid selection. Enter 1-5 only\n");
+                i = -1;
+
+            }
             return i;
-        }else{
-            System.out.print("Invalid selection. Enter 1-5 only\n");
-            i = -1;
-            
-        }
-        return i;
     }
         
     @Override
     public int selectOption(int maxInvalidInputs, boolean isTest){
+        BufferedReader sc = new BufferedReader(new InputStreamReader(System.in));
+            
+        //Scanner sc = new Scanner(System.in);
+
         int choice = -1;
-        
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Please select an option numerically (1-5)\n");
         String raw = null;
+        
+        System.out.print("Please select an option numerically (1-5)\n");
         
         for(int l=0; l<maxInvalidInputs; l++){
             try{
-                raw = sc.nextLine();
+                //raw = sc.readLine();
+                raw = sc.readLine();
             }catch(Exception e){
                 System.out.print("Invalid input ("+l+")\n");
             }finally{
@@ -64,7 +71,7 @@ public class DisplayImpl implements Display {
                     choice = validateUserInput(raw);
                 }
                 if(choice != -1){
-                    sc.close();
+                    //sc.close();
                     return choice;
                 }
             }
@@ -74,7 +81,7 @@ public class DisplayImpl implements Display {
             System.out.print(maxInvalidInputs + " invalid inputs have been enter successively\n"+
                     "This transaction will now cancel");
         }
-        sc.close();
+        //sc.close();
         return 4;
     }
     
