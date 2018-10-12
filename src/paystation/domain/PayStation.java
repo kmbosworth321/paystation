@@ -68,8 +68,8 @@ public interface PayStation {
     /**
      * Dummy header for setting current rate strategy of paystation instance.
      * Resolve clashes by overrulling this change. Header is to make tests more coherent.
-     * @param newStrategy enum indicating selected strategy.
+     * @param strategy RateStrategy defines which strategy this paystation will use.
      */
-    void setRateStrategy(Strategy newStrategy);
+    void setRateStrategy(RateStrategy strategy);
 
 }

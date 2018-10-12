@@ -12,6 +12,7 @@ public class LinearRateStrategyTests {
      * Test Cases for behavior of PayStation Using LinearRateStrategyTests
      */
     PayStationImpl ps;
+    RateStrategy strategy;
 
     /**
      * Tests existence of linear rate strategy in setup
@@ -19,7 +20,8 @@ public class LinearRateStrategyTests {
     @Before
     public void setup() {
         ps = new PayStationImpl();
-        ps.setRateStrategy(LINEAR);
+        strategy = new LinearRateStrategy();
+        ps.setRateStrategy(strategy);
     }
 
 //    @Test

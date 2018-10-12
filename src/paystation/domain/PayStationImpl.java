@@ -28,12 +28,14 @@ public class PayStationImpl implements PayStation {
     private HashMap<Integer, Integer> insertedMap;  /* map recording coin types and quantities */
     private int timeBought;
     private int totalCollected; /* Stores the total amount (in cents) collected by paystation */
+    private Display display; /* Handles all screen interaction with paystation */
 
     public PayStationImpl() {
         insertedSoFar = 0;
         insertedMap = new HashMap<>();
         timeBought = 0;
         totalCollected = 0;
+        this.display = new DisplayImpl();
     }
 
     @Override
@@ -88,7 +90,7 @@ public class PayStationImpl implements PayStation {
     }
 
     @Override
-    public void setRateStrategy(Strategy newStrategy) {
+    public void setRateStrategy(RateStrategy strategy) {
         System.err.println("set rate strategy unimplemented");
     }
 }
