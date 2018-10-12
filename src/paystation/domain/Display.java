@@ -21,7 +21,7 @@ public interface Display {
     /**
      * Prints private String MENU
      */
-    public void drawMenu();
+    public String drawMenu();
     
     /**
      * Confirms that User inputs is valid
@@ -37,12 +37,21 @@ public interface Display {
      * selection (1-5) or accepts a specified amount of invalid inputs and
      * cancels the transaction
      * 
-     * @param maxInvalidInputs is the maximum attempts a user has to make a valid
-     * selection
-     * @param isTest is a value that should be false unless testing
-     * 
      * @return a valid selection, an integer 1-5
      */
-    public int selectOption(int maxInvalidInputs, boolean isTest);
+    public int selectOption();
     
+    /**
+     * Read the machine's display. The display shows a numerical description of
+     * the amount of parking time accumulated so far based on inserted payment.
+     *
+     * @return the String with balance so far and timeBought to display on the 
+     * pay station display
+     */
+    public String read(int timeBought, int insertedSoFar);
+    
+    /**
+     * TODO
+     */
+    public int getInput();
 }

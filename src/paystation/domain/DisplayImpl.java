@@ -18,70 +18,77 @@ public class DisplayImpl implements Display {
             "    4. Cancel\n" +
             "    5. Change Rate Strategy\n";
     
+    private final int BADRETURNVALUE = 0;
 
     public void displayImpl(){
     }     
     
     @Override
-    public void drawMenu(){
-        System.out.print(MENU);
+    public String drawMenu(){
+        return MENU;
     }
     
     @Override
     public int validateUserInput(String input){
-        if(input != null)
-            input = input.trim();
-            int i = -1;
-            try{
-                i = Integer.parseInt(input);
-            }catch(Exception e){
-                System.out.print("Invalid selection. Integers only. Enter 1-5 only\n");
-                return -1;
-            }
-
-            if (i>=1 && i<=5){
-                return i;
-            }else{
-                System.out.print("Invalid selection. Enter 1-5 only\n");
-                i = -1;
-
-            }
-            return i;
+        input = input.trim();
+        int i;
+        try{
+            i = Integer.parseInt(input);
+        }catch(NumberFormatException e){
+            System.err.print("Invalid selection. Integers only.\n");
+            System.err.flush();
+            return BADRETURNVALUE;
+        }catch(Exception e){
+            System.err.print("Invalid selection!\n");
+            System.err.flush();
+            return BADRETURNVALUE;
+        }
+        return i;
     }
+    
         
     @Override
-    public int selectOption(int maxInvalidInputs, boolean isTest){
-        BufferedReader sc = new BufferedReader(new InputStreamReader(System.in));
-            
-        //Scanner sc = new Scanner(System.in);
-
-        int choice = -1;
-        String raw = null;
-        
-        System.out.print("Please select an option numerically (1-5)\n");
-        
-        for(int l=0; l<maxInvalidInputs; l++){
-            try{
-                //raw = sc.readLine();
-                raw = sc.readLine();
-            }catch(Exception e){
-                System.out.print("Invalid input ("+l+")\n");
-            }finally{
-                if(!isTest){
-                    choice = validateUserInput(raw);
-                }
-                if(choice != -1){
-                    //sc.close();
-                    return choice;
-                }
-            }
+    public int selectOption(){
+        int choice = getInput();
+        if (choice>=1 && choice<=5){
+            return choice;
+        }else{
+            System.err.print("Invalid selection. Enter 1-5 only\n");
+            System.err.flush();
+            return BADRETURNVALUE;
         }
-        if (!isTest){
-            //if this code is reached then user entered too many invalid inputs
-            System.out.print(maxInvalidInputs + " invalid inputs have been enter successively\n"+
-                    "This transaction will now cancel");
-        }
-        //sc.close();
-        return 4;
     }
+    
+    @Override
+    public int getInput(){
+        BufferedReader sc = new BufferedReader(new InputStreamReader(System.in));
+        String raw = "";
+        int cleanInput = BADRETURNVALUE;
+        
+        try{
+            //raw = sc.readLine();
+            raw = sc.readLine();
+        }catch(NullPointerException e){
+            System.err.print("No input\n");
+            System.err.flush();
+            return BADRETURNVALUE;
+        }catch(Exception e){
+            System.err.print("Invalid input ("+raw+")\n");
+            System.err.flush();
+            return BADRETURNVALUE;
+        }
+        cleanInput = validateUserInput(raw);
+        //if(cleanInput is Integer)
+        return cleanInput;
+    }
+    
+    @Override
+    public String read(int timeBought, int insertedSoFar){
+        StringBuilder retVal = new StringBuilder();
+        retVal.append(Integer.toString(insertedSoFar));
+        retVal.append(" cents buys ");
+        retVal.append(Integer.toString(timeBought));
+        retVal.append(" minutes");
+        return retVal.toString();
+    }  
 }

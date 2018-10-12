@@ -39,14 +39,20 @@ public class PayStationImpl implements PayStation {
     }
 
     @Override
-    public Display display() {
-        return this.display;
+    public Display display(){
+        return display;
+    }
+    
+    @Override
+    public String readDisplay() {
+        return display.read(timeBought, insertedSoFar);
     }
 
     @Override
     public void addPayment(int coinValue)
             throws IllegalCoinException {
         switch (coinValue) {
+            //case 1: break; //WHY AREN'T PENNIES COINS! copper costs :(
             case 5: break;
             case 10: break;
             case 25: break;
@@ -59,11 +65,6 @@ public class PayStationImpl implements PayStation {
         else
             insertedMap.put(coinValue, 1);
         timeBought = insertedSoFar / 5 * 2;
-    }
-
-    @Override
-    public int readDisplay() {
-        return timeBought;
     }
 
     @Override
