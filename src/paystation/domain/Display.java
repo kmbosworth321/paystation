@@ -45,22 +45,4 @@ public interface Display {
      */
     public int selectOption(int maxInvalidInputs, boolean isTest);
     
-    /**
-     * Prints a formatted receipt
-     * 
-     * @param r is a receipt object to print
-     */
-    public void printReceipt(Receipt r);
-    
-    /**
-     * Formats the receipt r into useful strings
-     * 
-     * @param r is a receipt object to format
-     * 
-     * @return an array of strings, with three elements 
-     * minutes bought e.i. "30" or "44"
-     * the current time
-     * the time the parking expires
-     */
-    public String[] calculateTimes(Receipt r);
 }

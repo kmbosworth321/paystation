@@ -84,30 +84,4 @@ public class DisplayImpl implements Display {
         //sc.close();
         return 4;
     }
-    
-    @Override
-    public void printReceipt(Receipt r){
-        String[] times = calculateTimes(r);
-        
-        String mins = times[0];
-        String now = times[1];
-        String exp = times[2];
-        
-        System.out.print("Ticket purchased on " + now + " for "+mins+" minutes\n");
-        System.out.print("Parking expires at " + exp);
-    }
-    
-    @Override
-    public String[] calculateTimes(Receipt r){
-        Calendar cal = Calendar.getInstance();
-        
-        String mins = Integer.toString(r.value());
-        int millis = r.value() * 60 * 1000;
-        
-        Date now = cal.getTime();
-        Date exp = new Date(now.getTime() + millis);
-        
-        String[] retval = {mins, now.toString(), exp.toString()};
-        return retval;
-    }
 }
