@@ -245,5 +245,6 @@ public class PayStationImplTest {
         HashMap<Integer, Integer> emptyMap = (HashMap<Integer, Integer>) ps.cancel();
         assertTrue("Buy should clear map.", emptyMap.isEmpty());
     }
-
+    
+ 
 }
