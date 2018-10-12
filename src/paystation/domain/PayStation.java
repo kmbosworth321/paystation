@@ -23,6 +23,9 @@ import java.util.Map;
 
 public interface PayStation {
 
+    // TODO: Add documentation blurb.
+    Display display();
+
     /**
      * Insert coin into the pay station and adjust state accordingly.
      *

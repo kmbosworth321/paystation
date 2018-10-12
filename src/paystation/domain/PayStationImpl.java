@@ -39,6 +39,11 @@ public class PayStationImpl implements PayStation {
     }
 
     @Override
+    public Display display() {
+        return this.display;
+    }
+
+    @Override
     public void addPayment(int coinValue)
             throws IllegalCoinException {
         switch (coinValue) {
