@@ -68,11 +68,11 @@ public class PayStationImpl implements PayStation {
     }
 
     @Override
-    public Receipt buy() {
+    public String buy() {
         Receipt r = new ReceiptImpl(timeBought);
         totalCollected += insertedSoFar; /* Each buy action accrues more total money collected */
         reset();
-        return r;
+        return r.print();
     }
 
     @Override

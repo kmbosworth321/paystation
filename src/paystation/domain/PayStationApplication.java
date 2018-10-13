@@ -37,15 +37,23 @@ public class PayStationApplication {
                     invalidInputs = 0;
                     break;
                 case 3:
-                    System.out.println("Calling method 'Buy Ticket'");
-                    invalidInputs = 0;
-                    break;
+                    //System.out.println("Calling method 'Buy Ticket'");
+                    System.out.println("\n\n\n\n\n\n\n" + ps.buy() + 
+                            "\n\nThank you!\nGoodbye");
+                    break OUTER;
                 case 4:
-                    System.out.println("Calling method 'Cancel'");
-                    ps.cancel();
+                    System.out.println("Good Day");
+                    System.out.println(ps.cancel().toString());
                     break OUTER;
                 case 5:
-                    System.out.println("Calling method 'Change Rate Strategy'");
+                    System.out.println("'Change Rate Strategy' needs work, see "
+                            + "stand in code below");
+                    /*try{
+                        RateStrategy rs = new RateStrategy();
+                        ps.setRateStrategy(rs);
+                    }catch(Exception e){
+                        System.err.print(e);
+                    }*/
                     invalidInputs = 0;
                     break;
                 default:

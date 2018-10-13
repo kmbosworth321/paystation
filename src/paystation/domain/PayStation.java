@@ -50,7 +50,7 @@ public interface PayStation {
      *
      * @return a valid parking receipt object.
      */
-    Receipt buy();
+    String buy();
 
     /**
      * Cancel the present transaction. Resets the paystation for a new transaction.
