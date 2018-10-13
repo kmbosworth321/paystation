@@ -24,7 +24,7 @@ import java.util.Map;
 public interface PayStation {
 
     // TODO: Add documentation blurb.
-    Display display();
+    public Display display();
 
     /**
      * Insert coin into the pay station and adjust state accordingly.
@@ -39,9 +39,10 @@ public interface PayStation {
      * Read the machine's display. The display shows a numerical description of
      * the amount of parking time accumulated so far based on inserted payment.
      *
-     * @return the number to display on the pay station display
+     * @return the String with balance so far and timeBought to display on the 
+     * pay station display
      */
-    int readDisplay();
+    String readDisplay();
 
     /**
      * Buy parking time. Terminate the ongoing transaction and return a parking
@@ -49,7 +50,7 @@ public interface PayStation {
      *
      * @return a valid parking receipt object.
      */
-    Receipt buy();
+    String buy();
 
     /**
      * Cancel the present transaction. Resets the paystation for a new transaction.
