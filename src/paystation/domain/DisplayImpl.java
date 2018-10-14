@@ -33,11 +33,9 @@ public class DisplayImpl implements Display {
             i = Integer.parseInt(input);
         }catch(NumberFormatException e){
             System.err.print("Invalid selection. Integers only.\n");
-            System.err.flush();
             return BADRETURNVALUE;
         }catch(Exception e){
             System.err.print("Invalid selection!\n");
-            System.err.flush();
             return BADRETURNVALUE;
         }
         return i;
@@ -51,7 +49,6 @@ public class DisplayImpl implements Display {
             return choice;
         }else{
             System.err.print("Invalid selection. Enter 1-5 only\n");
-            System.err.flush();
             return BADRETURNVALUE;
         }
     }
@@ -63,19 +60,15 @@ public class DisplayImpl implements Display {
         int cleanInput = BADRETURNVALUE;
         
         try{
-            //raw = sc.readLine();
             raw = sc.readLine();
         }catch(NullPointerException e){
             System.err.print("No input\n");
-            System.err.flush();
             return BADRETURNVALUE;
         }catch(Exception e){
             System.err.print("Invalid input ("+raw+")\n");
-            System.err.flush();
             return BADRETURNVALUE;
         }
         cleanInput = validateUserInput(raw);
-        //if(cleanInput is Integer)
         return cleanInput;
     }
     
@@ -93,7 +86,7 @@ public class DisplayImpl implements Display {
     @Override
     public String drawStrategyMenu(){
         String menu = ("Please select a new rate strategy\n"
-                            + "1. Linear\n2. Progressive\n3.Alternating");
+                            + "1. Linear\n2. Progressive\n3. Alternating");
         return menu;
     }
 }
