@@ -6,9 +6,6 @@
 package paystation.domain;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.Scanner;
-import java.util.Calendar;
-import java.util.Date;
 
 public class DisplayImpl implements Display {
     
@@ -85,10 +82,18 @@ public class DisplayImpl implements Display {
     @Override
     public String read(int timeBought, int insertedSoFar){
         StringBuilder retVal = new StringBuilder();
+        retVal.append("\n\n");
         retVal.append(Integer.toString(insertedSoFar));
         retVal.append(" cents buys ");
         retVal.append(Integer.toString(timeBought));
-        retVal.append(" minutes");
+        retVal.append(" minutes\n\n");
         return retVal.toString();
     }  
+    
+    @Override
+    public String drawStrategyMenu(){
+        String menu = ("Please select a new rate strategy\n"
+                            + "1. Linear\n2. Progressive\n3.Alternating");
+        return menu;
+    }
 }
