@@ -2,5 +2,5 @@ package paystation.domain;
 
 public interface RateStrategy {
 
-    int calculatePayment();
+    int calculatePayment(int inserted);
 }
