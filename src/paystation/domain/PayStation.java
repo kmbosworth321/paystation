@@ -23,7 +23,10 @@ import java.util.Map;
 
 public interface PayStation {
 
-    // TODO: Add documentation blurb.
+    /**
+     * Useful for accessing methods within Display
+     * @return the display() object
+     */
     public Display display();
 
     /**
@@ -70,10 +73,13 @@ public interface PayStation {
     int empty();
 
     /**
-     * Dummy header for setting current rate strategy of paystation instance.
-     * Resolve clashes by overrulling this change. Header is to make tests more coherent.
-     * @param strategy RateStrategy defines which strategy this paystation will use.
+     * Set the rateStrategy, which calculates the timeBought from insertedSoFar
+     * 
+     * @param takes an integer that signifies which rate strategy to use
+     * 1 for Linear (Default)
+     * 2 for Progressive 
+     * 3 for Alternating
      */
-    void setRateStrategy(RateStrategy strategy);
+    void setRateStrategy(int selection);
 
 }

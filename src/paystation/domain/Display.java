@@ -21,7 +21,7 @@ public interface Display {
     /**
      * Prints private String MENU
      */
-    public String drawMenu();
+    String drawMenu();
     
     /**
      * Confirms that User inputs is valid
@@ -29,7 +29,7 @@ public interface Display {
      * 
      * @return either the valid selection or -1 to signify an invalid selection
      */
-    public int validateUserInput(String input);
+    int validateUserInput(String input);
     
     
     /**
@@ -39,7 +39,7 @@ public interface Display {
      * 
      * @return a valid selection, an integer 1-5
      */
-    public int selectOption();
+    int selectOption();
     
     /**
      * Read the machine's display. The display shows a numerical description of
@@ -48,10 +48,15 @@ public interface Display {
      * @return the String with balance so far and timeBought to display on the 
      * pay station display
      */
-    public String read(int timeBought, int insertedSoFar);
+    String read(int timeBought, int insertedSoFar);
     
     /**
      * TODO
      */
-    public int getInput();
+    int getInput();
+    
+    /**
+     * TODO
+     */
+    String drawStrategyMenu();
 }
