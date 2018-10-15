@@ -2,6 +2,7 @@ package paystation.domain;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 /**
  * Implementation of the pay station.
@@ -36,18 +37,18 @@ public class PayStationImpl implements PayStation {
         insertedMap = new HashMap<>();
         timeBought = 0;
         totalCollected = 0;
-        display = new DisplayImpl();
+        display = new DisplayImpl(new Scanner(System.in));
         this.rateStrategy = new LinearRateStrategy();//default to avoid errors
     }
 
     @Override
-    public Display display(){
-        return display;
+    public Display display() {
+        return this.display;
     }
-    
+
     @Override
-    public String readDisplay() {
-        return display.read(timeBought, insertedSoFar);
+    public void readDisplay() {
+        System.out.println(display.read(timeBought, insertedSoFar));
     }
 
     @Override
@@ -70,6 +71,9 @@ public class PayStationImpl implements PayStation {
 
     @Override
     public String buy() {
+        if(timeBought == 0) {
+            return null;
+        }
         Receipt r = new ReceiptImpl(timeBought);
         totalCollected += insertedSoFar; /* Each buy action accrues more total money collected */
         reset();
@@ -97,21 +101,8 @@ public class PayStationImpl implements PayStation {
     }
 
     @Override
-    public void setRateStrategy(int selection) {
-        switch (selection) {
-            case 1:
-                this.rateStrategy= new LinearRateStrategy();
-                break;
-            case 2:
-                this.rateStrategy= new ProgressiveRateStrategy();
-                break;
-            case 3:
-                this.rateStrategy= new AlternatingRateStrategy();
-                break;
-            default://input could be out of range
-                System.err.println("Invalid Selection. Rate Strategy not set");
-                break;
-        }
+    public void setRateStrategy(RateStrategy rateStrategy) {
+        this.rateStrategy = rateStrategy;
         timeBought = rateStrategy.calculatePayment(insertedSoFar);
     }
 }

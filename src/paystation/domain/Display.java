@@ -19,27 +19,30 @@ package paystation.domain;
 public interface Display {
     
     /**
-     * Prints private String MENU
+     * Prints private String MAIN_MENU
      */
-    String drawMenu();
+    void drawMainMenu();
+
+    /**
+     * Prints private String MAIN_MENU
+     */
+    void drawCoinPrompt();
     
     /**
      * Confirms that User inputs is valid
-     * @param input is a String of user input
      * 
-     * @return either the valid selection or -1 to signify an invalid selection
+     * @return either the valid selection or BADRETURNVALUE to signify an invalid selection
      */
-    int validateUserInput(String input);
+    int validateUserInput();
     
     
     /**
      * Gets menu selection from user. It forces the user to enter a valid 
-     * selection (1-5) or accepts a specified amount of invalid inputs and
-     * cancels the transaction
+     * selection in a range provided via start-end params.
      * 
-     * @return a valid selection, an integer 1-5
+     * @return a valid selection, an integer between start and end
      */
-    int selectOption();
+    int selectOption(int start, int end);
     
     /**
      * Read the machine's display. The display shows a numerical description of
@@ -58,5 +61,5 @@ public interface Display {
     /**
      * TODO
      */
-    String drawStrategyMenu();
+    void drawStrategyMenu();
 }

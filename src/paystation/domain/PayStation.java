@@ -45,7 +45,7 @@ public interface PayStation {
      * @return the String with balance so far and timeBought to display on the 
      * pay station display
      */
-    String readDisplay();
+    void readDisplay();
 
     /**
      * Buy parking time. Terminate the ongoing transaction and return a parking
@@ -80,6 +80,6 @@ public interface PayStation {
      * 2 for Progressive 
      * 3 for Alternating
      */
-    void setRateStrategy(int selection);
+    void setRateStrategy(RateStrategy rateStrategy);
 
 }

@@ -7,10 +7,7 @@ package paystation.domain;
 
 import java.util.Calendar;
 import static org.hamcrest.CoreMatchers.containsString;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -22,9 +19,7 @@ public class ReceiptImplTest {
     
     public ReceiptImplTest() {
     }
-    
-    //PayStation ps;
-    //Display d;
+
     Receipt r;
 
     @Before
@@ -69,7 +64,6 @@ public class ReceiptImplTest {
         int value = 30;
         Receipt test = new ReceiptImpl(value);
         String receipt = r.print();
-        //assertEquals("Should print the recipt", value+" minutes", getOutput());
         assertThat("Should return string", receipt, containsString("Ticket purchased on "));
     }
 }
