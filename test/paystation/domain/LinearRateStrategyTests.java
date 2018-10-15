@@ -1,11 +1,14 @@
 
 package paystation.domain;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
-import static paystation.domain.Strategy.LINEAR;
 
 import org.junit.Before;
+import org.junit.After;
 
 public class LinearRateStrategyTests {
     /**
@@ -13,29 +16,36 @@ public class LinearRateStrategyTests {
      */
     PayStationImpl ps;
     RateStrategy strategy;
+    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+    private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
+    private final PrintStream originalOut = System.out;
+    private final PrintStream originalErr = System.err;
 
     /**
      * Tests existence of linear rate strategy in setup
      */
     @Before
-    public void setup() {
+    public void setUpStreams() {
+        System.setOut(new PrintStream(outContent));
+        System.setErr(new PrintStream(errContent));
         ps = new PayStationImpl();
         strategy = new LinearRateStrategy();
         ps.setRateStrategy(strategy);
     }
 
-//    @Test
-//    public void existsClassLinearRateStrategy() {
-//        rs = new LinearRateStrategy();
-//    }
-    // Don't use @Test -- test in setup
+    @After
+    public void restoreStreams() {
+        System.setOut(originalOut);
+        System.setErr(originalErr);
+    }
 
     /**
      * Assert that meter starts with no time on it
      */
     @Test
     public void shouldHaveNoTimeAfterNoMoney(){
-        assertEquals("Time should be zero until payment", 0, ps.readDisplay());
+        ps.readDisplay();
+        assertEquals("\n\n0 cents buys 0 minutes\n\n\n", outContent.toString());
     }
 
     /**
@@ -45,8 +55,8 @@ public class LinearRateStrategyTests {
     public void shouldDisplay2MinFor5Cents()
             throws IllegalCoinException {
         ps.addPayment(5);
-        assertEquals("Should display 2 min for 5 cents",
-                2, ps.readDisplay());
+        ps.readDisplay();
+        assertEquals("\n\n5 cents buys 2 minutes\n\n\n", outContent.toString());
     }
 
     /**
@@ -55,8 +65,8 @@ public class LinearRateStrategyTests {
     @Test
     public void shouldDisplay10MinFor25Cents() throws IllegalCoinException {
         ps.addPayment(25);
-        assertEquals("Should display 10 min for 25 cents",
-                10, ps.readDisplay());
+        ps.readDisplay();
+        assertEquals("\n\n25 cents buys 10 minutes\n\n\n", outContent.toString());
     }
 
     /**
@@ -70,18 +80,20 @@ public class LinearRateStrategyTests {
         for (int i = 0; i < 7; i++) {
             ps.addPayment(25);
         }
-        assertEquals("Should display 70 minutes for $1.75.", 70, ps.readDisplay());
+        ps.readDisplay();
+        assertEquals("\n\n175 cents buys 70 minutes\n\n\n", outContent.toString());
     }
 
     /**
      * Check that linear price model continues into third hour.
      */
     @Test
-    public void shouldDisplay130MinFor310Cents() throws IllegalCoinException {
-        for(int i = 0; i < 13; i++) {
+    public void shouldDisplay200MinFor500Cents() throws IllegalCoinException {
+        for(int i = 0; i < 20; i++) {
             ps.addPayment(25);
         }
-        assertEquals("Should display 130 minutes for $3.25", 130, ps.readDisplay());
+        ps.readDisplay();
+        assertEquals("\n\n500 cents buys 200 minutes\n\n\n", outContent.toString());
     }
 
 }

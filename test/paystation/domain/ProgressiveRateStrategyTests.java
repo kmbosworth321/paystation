@@ -1,11 +1,14 @@
 
 package paystation.domain;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
-import static paystation.domain.Strategy.PROGRESSIVE;
 
 import org.junit.Before;
+import org.junit.After;
 
 public class ProgressiveRateStrategyTests {
     /**
@@ -13,15 +16,27 @@ public class ProgressiveRateStrategyTests {
      */
     PayStationImpl ps;
     RateStrategy strategy;
+    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+    private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
+    private final PrintStream originalOut = System.out;
+    private final PrintStream originalErr = System.err;
 
     /**
      * Tests existence of linear rate strategy in setup
      */
     @Before
     public void setup() {
+        System.setOut(new PrintStream(outContent));
+        System.setErr(new PrintStream(errContent));
         ps = new PayStationImpl();
         strategy = new ProgressiveRateStrategy();
         ps.setRateStrategy(strategy);
+    }
+
+    @After
+    public void restoreStreams() {
+        System.setOut(originalOut);
+        System.setErr(originalErr);
     }
 
     /**
@@ -29,18 +44,18 @@ public class ProgressiveRateStrategyTests {
      */
     @Test
     public void shouldHaveNoTimeAfterNoMoney(){
-        assertEquals("Time should be zero until payment", 0, ps.readDisplay());
+        ps.readDisplay();
+        assertEquals("\n\n0 cents buys 0 minutes\n\n\n", outContent.toString());
     }
 
     /**
      * Entering 5 cents should make the display report 2 minutes parking time.
      */
     @Test
-    public void shouldDisplay2MinFor5Cents()
-            throws IllegalCoinException {
+    public void shouldDisplay2MinFor5Cents() throws IllegalCoinException {
         ps.addPayment(5);
-        assertEquals("Should display 2 min for 5 cents",
-                2, ps.readDisplay());
+        ps.readDisplay();
+        assertEquals("\n\n5 cents buys 2 minutes\n\n\n", outContent.toString());
     }
 
     /**
@@ -49,12 +64,10 @@ public class ProgressiveRateStrategyTests {
     @Test
     public void shouldDisplay10MinFor25Cents() throws IllegalCoinException {
         ps.addPayment(25);
-        assertEquals("Should display 10 min for 25 cents",
-                10, ps.readDisplay());
+        ps.readDisplay();
+        assertEquals("\n\n25 cents buys 10 minutes\n\n\n", outContent.toString());
     }
 
-
-    // TODO: Commented out asserts for tests below. After Display is merged, implement Strategies and revisit these tests.
     /**
      * Check that progressive price model begins in second hour.
      *
@@ -67,7 +80,8 @@ public class ProgressiveRateStrategyTests {
             ps.addPayment(25);
         }
         ps.addPayment(10);
-        //assertEquals("Should display 63 minutes for $1.60.", 63, ps.readDisplay());
+        ps.readDisplay();
+        assertEquals("\n\n160 cents buys 63 minutes\n\n\n", outContent.toString());
     }
 
     /**
@@ -81,7 +95,8 @@ public class ProgressiveRateStrategyTests {
             ps.addPayment(25);
         } // Pay $3.50 for first two hours.
         ps.addPayment(5);
-        //assertEquals("Should display 121 minutes for $3.55", 121, ps.readDisplay());
+        ps.readDisplay();
+        assertEquals("\n\n355 cents buys 121 minutes\n\n\n", outContent.toString());
     }
 
 }

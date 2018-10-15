@@ -2,70 +2,89 @@ package paystation.domain;
 
 
 public class PayStationApplication {
+    private static final int MAX_INVALID_INPUTS = 10;
+    private static final int MAX_LOOPS = 100;
+
     public static void main(String [] args) {
         PayStationImpl ps = new PayStationImpl();
         startApplication(ps);
     }
 
     private static void startApplication(PayStation ps) {
-        // TODO: currently errors out for...reasons. Fix as separate commit.
         boolean acceptingUserInput = true;
-        int maxInvalidInputs = 10;
         int invalidInputs = 0;
-        int maxLoops = 100;
-        
-        OUTER:
-        for (int t = 0; t<maxLoops; t++) {
-            System.out.println(ps.display().drawMenu());
-            System.out.print("Please select an option numerically (1-5)\n");
-            int option = ps.display().selectOption();
-            
+        int loops = 0;
+
+        while(acceptingUserInput) {
+            loops++;
+            acceptingUserInput = loops < MAX_LOOPS;
+            ps.display().drawMainMenu();
+            int option = ps.display().selectOption(1, 5);
+
             switch (option) {
                 case 1:
-                    System.out.print("Please insert a coin (5, 10, 25)\n");
-                    int coinValue = ps.display().getInput();
-                    //System.out.println(Integer.toString(coinValue));//debugged
+                    ps.display().drawCoinPrompt();
                     try{
-                        ps.addPayment(coinValue);
-                    }catch(IllegalCoinException e){
-                        System.err.println(e);
+                        int coinValue = ps.display().validateUserInput();
+                        if(coinValue != -1) {
+                            ps.addPayment(coinValue);
+                            System.out.println(coinValue + " cents successfully entered.\n");
+                        } else {
+                            System.out.println("Invalid coin amount entered.\n");
+                        }
+                    } catch(IllegalCoinException e){
+                        System.out.println("Invalid coin entered.\n");
                     }
                     invalidInputs = 0;
                     break;
                 case 2:
-                    System.out.println(ps.readDisplay());
+                    ps.readDisplay();
                     invalidInputs = 0;
                     break;
                 case 3:
-                    //System.out.println("Calling method 'Buy Ticket'");
-                    System.out.println("\n\n\n\n\n\n\n" + ps.buy() + 
-                            "\n\nThank you!\nGoodbye");
-                    break OUTER;
+                    String printedReceipt = ps.buy();
+                    if(printedReceipt == null) {
+                        System.out.println("Cannot complete transaction. No coins entered.");
+                    } else {
+                        System.out.println("\n\n\n\n\n\n\n" + printedReceipt +
+                                "\n\nThank you!\nGoodbye\n");
+                    }
+                    break;
                 case 4:
                     System.out.println("Good Day");
-                    System.out.println(ps.cancel().toString());
-                    break OUTER;
+                    System.out.println("Coins Returned: " + ps.cancel().toString() + "\n");
+                    break;
                 case 5:
-                    System.out.println("'Change Rate Strategy' needs work, see "
-                            + "stand in code below");
-                    /*try{
-                        RateStrategy rs = new RateStrategy();
-                        ps.setRateStrategy(rs);
-                    }catch(Exception e){
-                        System.err.print(e);
-                    }*/
+                    ps.display().drawStrategyMenu();
+                    int newStrategy = ps.display().selectOption(1, 3);
+                    switch (newStrategy) {
+                        case 1:
+                            ps.setRateStrategy(new LinearRateStrategy());
+                            break;
+                        case 2:
+                            ps.setRateStrategy(new ProgressiveRateStrategy());
+                            break;
+                        case 3:
+                            RateStrategy weekendStrategy = new LinearRateStrategy();
+                            RateStrategy weekdayStrategy = new ProgressiveRateStrategy();
+                            ps.setRateStrategy(new AlternatingRateStrategy(weekdayStrategy, weekendStrategy));
+                            break;
+                        default://input could be out of range
+                            System.out.println("Invalid Selection. Rate Strategy not set\n");
+                            break;
+                    }
                     invalidInputs = 0;
                     break;
                 default:
                     invalidInputs++;
-                    if (invalidInputs >= maxInvalidInputs) {
-                        System.err.println(maxInvalidInputs+" invalid inputs entered");
+                    if (invalidInputs >= MAX_INVALID_INPUTS) {
+                        acceptingUserInput = false;
+                        System.err.println(MAX_INVALID_INPUTS + " invalid inputs entered\n");
                         ps.cancel();
-                        break OUTER;
+                        break;
                     }
                     break;
             }
-            System.err.flush();
         }
     }
 }
