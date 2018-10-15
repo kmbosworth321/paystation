@@ -29,18 +29,25 @@ public class PayStationImpl implements PayStation {
     private int timeBought;
     private int totalCollected; /* Stores the total amount (in cents) collected by paystation */
     private Display display; /* Handles all screen interaction with paystation */
+    private RateStrategy rateStrategy;
 
     public PayStationImpl() {
         insertedSoFar = 0;
         insertedMap = new HashMap<>();
         timeBought = 0;
         totalCollected = 0;
-        this.display = new DisplayImpl();
+        display = new DisplayImpl();
+        this.rateStrategy = new LinearRateStrategy();//default to avoid errors
     }
 
     @Override
-    public Display display() {
-        return this.display;
+    public Display display(){
+        return display;
+    }
+    
+    @Override
+    public String readDisplay() {
+        return display.read(timeBought, insertedSoFar);
     }
 
     @Override
@@ -58,20 +65,15 @@ public class PayStationImpl implements PayStation {
             insertedMap.put(coinValue, insertedMap.get(coinValue) + 1);
         else
             insertedMap.put(coinValue, 1);
-        timeBought = insertedSoFar / 5 * 2;
+        timeBought = rateStrategy.calculatePayment(insertedSoFar);
     }
 
     @Override
-    public int readDisplay() {
-        return timeBought;
-    }
-
-    @Override
-    public Receipt buy() {
+    public String buy() {
         Receipt r = new ReceiptImpl(timeBought);
         totalCollected += insertedSoFar; /* Each buy action accrues more total money collected */
         reset();
-        return r;
+        return r.print();
     }
 
     @Override
@@ -95,7 +97,21 @@ public class PayStationImpl implements PayStation {
     }
 
     @Override
-    public void setRateStrategy(RateStrategy strategy) {
-        System.err.println("set rate strategy unimplemented");
+    public void setRateStrategy(int selection) {
+        switch (selection) {
+            case 1:
+                this.rateStrategy= new LinearRateStrategy();
+                break;
+            case 2:
+                this.rateStrategy= new ProgressiveRateStrategy();
+                break;
+            case 3:
+                this.rateStrategy= new AlternatingRateStrategy();
+                break;
+            default://input could be out of range
+                System.err.println("Invalid Selection. Rate Strategy not set");
+                break;
+        }
+        timeBought = rateStrategy.calculatePayment(insertedSoFar);
     }
 }

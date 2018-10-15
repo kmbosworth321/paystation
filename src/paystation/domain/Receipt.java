@@ -21,4 +21,18 @@ public interface Receipt {
      * @return number of minutes parking time
      */
     int value();
+    
+    /**
+     * Return the number of minutes this receipt is valid for.
+     *
+     * @return number of minutes parking time
+     */
+    public String print();
+    
+    /**
+     * Return the number of minutes this receipt is valid for.
+     *
+     * @return number of minutes parking time
+     */
+    public String[] format();
 }

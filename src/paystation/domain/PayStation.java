@@ -23,8 +23,11 @@ import java.util.Map;
 
 public interface PayStation {
 
-    // TODO: Add documentation blurb.
-    Display display();
+    /**
+     * Useful for accessing methods within Display
+     * @return the display() object
+     */
+    public Display display();
 
     /**
      * Insert coin into the pay station and adjust state accordingly.
@@ -39,9 +42,10 @@ public interface PayStation {
      * Read the machine's display. The display shows a numerical description of
      * the amount of parking time accumulated so far based on inserted payment.
      *
-     * @return the number to display on the pay station display
+     * @return the String with balance so far and timeBought to display on the 
+     * pay station display
      */
-    int readDisplay();
+    String readDisplay();
 
     /**
      * Buy parking time. Terminate the ongoing transaction and return a parking
@@ -49,7 +53,7 @@ public interface PayStation {
      *
      * @return a valid parking receipt object.
      */
-    Receipt buy();
+    String buy();
 
     /**
      * Cancel the present transaction. Resets the paystation for a new transaction.
@@ -69,10 +73,13 @@ public interface PayStation {
     int empty();
 
     /**
-     * Dummy header for setting current rate strategy of paystation instance.
-     * Resolve clashes by overrulling this change. Header is to make tests more coherent.
-     * @param strategy RateStrategy defines which strategy this paystation will use.
+     * Set the rateStrategy, which calculates the timeBought from insertedSoFar
+     * 
+     * @param takes an integer that signifies which rate strategy to use
+     * 1 for Linear (Default)
+     * 2 for Progressive 
+     * 3 for Alternating
      */
-    void setRateStrategy(RateStrategy strategy);
+    void setRateStrategy(int selection);
 
 }

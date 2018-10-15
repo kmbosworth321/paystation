@@ -21,7 +21,7 @@ public interface Display {
     /**
      * Prints private String MENU
      */
-    public void drawMenu();
+    String drawMenu();
     
     /**
      * Confirms that User inputs is valid
@@ -29,7 +29,7 @@ public interface Display {
      * 
      * @return either the valid selection or -1 to signify an invalid selection
      */
-    public int validateUserInput(String input);
+    int validateUserInput(String input);
     
     
     /**
@@ -37,30 +37,26 @@ public interface Display {
      * selection (1-5) or accepts a specified amount of invalid inputs and
      * cancels the transaction
      * 
-     * @param maxInvalidInputs is the maximum attempts a user has to make a valid
-     * selection
-     * @param isTest is a value that should be false unless testing
-     * 
      * @return a valid selection, an integer 1-5
      */
-    public int selectOption(int maxInvalidInputs, boolean isTest);
+    int selectOption();
     
     /**
-     * Prints a formatted receipt
-     * 
-     * @param r is a receipt object to print
+     * Read the machine's display. The display shows a numerical description of
+     * the amount of parking time accumulated so far based on inserted payment.
+     *
+     * @return the String with balance so far and timeBought to display on the 
+     * pay station display
      */
-    public void printReceipt(Receipt r);
+    String read(int timeBought, int insertedSoFar);
     
     /**
-     * Formats the receipt r into useful strings
-     * 
-     * @param r is a receipt object to format
-     * 
-     * @return an array of strings, with three elements 
-     * minutes bought e.i. "30" or "44"
-     * the current time
-     * the time the parking expires
+     * TODO
      */
-    public String[] calculateTimes(Receipt r);
+    int getInput();
+    
+    /**
+     * TODO
+     */
+    String drawStrategyMenu();
 }

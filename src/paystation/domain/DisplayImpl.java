@@ -4,9 +4,8 @@
  * and open the template in the editor.
  */
 package paystation.domain;
-import java.util.Scanner;
-import java.util.Calendar;
-import java.util.Date;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 public class DisplayImpl implements Display {
     
@@ -16,91 +15,78 @@ public class DisplayImpl implements Display {
             "    4. Cancel\n" +
             "    5. Change Rate Strategy\n";
     
+    private final int BADRETURNVALUE = 0;
 
     public void displayImpl(){
     }     
     
     @Override
-    public void drawMenu(){
-        System.out.print(MENU);
+    public String drawMenu(){
+        return MENU;
     }
     
     @Override
     public int validateUserInput(String input){
         input = input.trim();
-        int i = -1;
+        int i;
         try{
             i = Integer.parseInt(input);
+        }catch(NumberFormatException e){
+            System.err.print("Invalid selection. Integers only.\n");
+            return BADRETURNVALUE;
         }catch(Exception e){
-            System.out.print("Invalid selection. Integers only. Enter 1-5 only\n");
-            return -1;
-        }
-        
-        if (i>=1 && i<=5){
-            return i;
-        }else{
-            System.out.print("Invalid selection. Enter 1-5 only\n");
-            i = -1;
-            
+            System.err.print("Invalid selection!\n");
+            return BADRETURNVALUE;
         }
         return i;
     }
+    
         
     @Override
-    public int selectOption(int maxInvalidInputs, boolean isTest){
-        int choice = -1;
-        
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Please select an option numerically (1-5)\n");
-        String raw = null;
-        
-        for(int l=0; l<maxInvalidInputs; l++){
-            try{
-                raw = sc.nextLine();
-            }catch(Exception e){
-                System.out.print("Invalid input ("+l+")\n");
-            }finally{
-                if(!isTest){
-                    choice = validateUserInput(raw);
-                }
-                if(choice != -1){
-                    sc.close();
-                    return choice;
-                }
-            }
+    public int selectOption(){
+        int choice = getInput();
+        if (choice>=1 && choice<=5){
+            return choice;
+        }else{
+            System.err.print("Invalid selection. Enter 1-5 only\n");
+            return BADRETURNVALUE;
         }
-        if (!isTest){
-            //if this code is reached then user entered too many invalid inputs
-            System.out.print(maxInvalidInputs + " invalid inputs have been enter successively\n"+
-                    "This transaction will now cancel");
-        }
-        sc.close();
-        return 4;
     }
     
     @Override
-    public void printReceipt(Receipt r){
-        String[] times = calculateTimes(r);
+    public int getInput(){
+        BufferedReader sc = new BufferedReader(new InputStreamReader(System.in));
+        String raw = "";
+        int cleanInput = BADRETURNVALUE;
         
-        String mins = times[0];
-        String now = times[1];
-        String exp = times[2];
-        
-        System.out.print("Ticket purchased on " + now + " for "+mins+" minutes\n");
-        System.out.print("Parking expires at " + exp);
+        try{
+            raw = sc.readLine();
+        }catch(NullPointerException e){
+            System.err.print("No input\n");
+            return BADRETURNVALUE;
+        }catch(Exception e){
+            System.err.print("Invalid input ("+raw+")\n");
+            return BADRETURNVALUE;
+        }
+        cleanInput = validateUserInput(raw);
+        return cleanInput;
     }
     
     @Override
-    public String[] calculateTimes(Receipt r){
-        Calendar cal = Calendar.getInstance();
-        
-        String mins = Integer.toString(r.value());
-        int millis = r.value() * 60 * 1000;
-        
-        Date now = cal.getTime();
-        Date exp = new Date(now.getTime() + millis);
-        
-        String[] retval = {mins, now.toString(), exp.toString()};
-        return retval;
+    public String read(int timeBought, int insertedSoFar){
+        StringBuilder retVal = new StringBuilder();
+        retVal.append("\n\n");
+        retVal.append(Integer.toString(insertedSoFar));
+        retVal.append(" cents buys ");
+        retVal.append(Integer.toString(timeBought));
+        retVal.append(" minutes\n\n");
+        return retVal.toString();
+    }  
+    
+    @Override
+    public String drawStrategyMenu(){
+        String menu = ("Please select a new rate strategy\n"
+                            + "1. Linear\n2. Progressive\n3. Alternating");
+        return menu;
     }
 }
