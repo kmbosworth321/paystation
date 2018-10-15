@@ -34,5 +34,6 @@ public class AlternatingRateStrategy implements RateStrategy {
         }else{
             return weekdayStrategy.calculatePayment(inserted);
         }//Note: add more strategies by adding more options
+        return 0;
     }
 }
